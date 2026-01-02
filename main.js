@@ -307,7 +307,7 @@ window.addEventListener('devicemotion', (event) => {
     // Motion detected
     console.log('Motion detected!');
     setTimeout(()=>{
-   window.location.href ="Boom.html";
+   window.location.href ="index.html";
    document.getElementById('toolTip').style.display="none";
    countdis.style.display = "none";
     },500);
