@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Provider's dashboard</title>
+    <style>
+      body{
+       font-family:Courier New,Courier;
+       background:linear-gradient(to right,#222,black );
+       background-size:100% 900px;
+       color:white;
+       align-self:center;
+       width:100%;
+       height:50%;
+       margin:0;
+       padding:0;
+       text-align:center;
+    }
+   .heading_num{
+    background:linear-gradient(to right,black,#222);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:10%;
+    box-shadow:0 0 8px black;
+    
+  }
+    h1{
+      font-size:25px;
+      position:absolute;
+      top:1px;
+      left:1px;
+    }
+    
+    .heading_num .dot {
+      position:fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ddd;
+      border: 1px solid #000;
+      z-index: 1;
+}
+    .dot1 {
+      top: 7.9%;
+      left: 12%;
+}
+   .dot2 {
+      top: 8.4%;
+      left: 16%;
+}
+   .dot3 {
+      top: 8.4%;
+      left: 20%;
+}
+   .dot4 {
+      top: 8.1%;
+      left: 24%;
+}
+  .dot5 {
+      top: 7%;
+      left: 27.8%;
+}
+
+.ellipsis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute; 
+  height: 20px;
+  top: 28px;
+  right: 5%;
+  transition: transform 0.3s ease;
+  
+}
+.ellipsis:hover {
+  transform: scale(1.3);
+}
+.ellipsis span {
+  width: 25px;
+  height: 1px;
+  background-color: #ddd;
+  border-radius: 14%;
+  box-shadow: 2px 0 2px black;
+}
+.thepop {
+  position: fixed;
+  top: 65px;
+  right: 5px;
+  width: 185px;
+  height: 250px;
+  display: none;
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px black;
+  animation: fade 1.5s backwards;
+  opacity:120;
+}
+.nav_bar_container{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 100vh;
+  position:fixed;
+  top:0;
+  left: 0;
+  width:15%;
+  height: 100%;
+  transition: .25s ease;
+  background:linear-gradient(to bottom,black,gray);
+  background-size:100% 2400px;
+  backdrop-filter:blur(20px);
+  overflow: hidden;
+  white-space: nowrap;
+  color: white;
+  box-shadow: 0px 0px 10px #111;
+  margin-top:83px;
+  animation:fadeSlide 380ms ease-in-out forwards;
+  z-index:1000;
+}
+
+.nav_bar_container:hover{
+ width: 225px; 
+ overflow-y: scroll;
+}
+
+.nav_items{
+ font-size: 22px;
+  padding: 18px;
+  text-align:left;
+}
+
+.nav_items:hover{
+  background: #1899ff; 
+  transition: 0.3s ease;
+  animation:pulse 1.7s infinite;
+  box-shadow:0 3pt 2pt black;
+  border-radius:10px;
+  width:80%;
+}
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(320px);
+  }
+  to {
+    opacity:1;
+    transform: translateY(0);
+  }
+}
+  @keyframes pulse{
+    0%{
+      transform:scale(0.991);
+      opacity:1;
+    }
+    50%{
+      transform:scale(1.1);
+      opacity:0.09;
+    }
+    100%{
+      transform:scale(1);
+      opacity:1;
+    }
+  }
+.fa{
+  margin-right: 20px;
+  
+}
+.sLb{
+  padding:6px;
+  font-size:20px;
+  position:relative;
+  text-align:left;
+}
+.sLb:hover{
+  background: #1988ff;
+  animation:pulse 1.7s infinite;
+  box-shadow:1px 3pt 2pt black;
+  border-radius:10px;
+}
+.thepopb {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 18px;
+  text-align: left;
+  transition: transform 0.7s ease;
+  margin-bottom:12px;
+}
+.thepopb:hover {
+  transform: scale(1.25);
+  animation:pulse 1.2s infinite;
+}
+#profile-listingP{
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top:23%;
+}
+#profilePCntna{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:black;
+  border:5px solid ;
+  border-bottom-color:/*#B20B6BF0*/ #1899ff;
+  margin-bottom:5%;
+}
+#Username,#uStatus,#num{
+  padding:0.8px;
+  margin:0.8px;
+}
+#buttons{
+  display:flex;
+  align-items:center;
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content: space-between;
+  gap:10px
+}
+.btn{
+  background:#1988ff;
+  border:1px solid ghostwhite;
+  border-radius:20px;
+  box-shadow:0 0 4pt rgba(0,0,0.05);
+  padding:8px 16px;
+  color:white;
+}
+.btn1{
+  background:#1988ff;
+  border:1px solid ghostwhite;
+  border-radius:20px;
+  box-shadow:0 0 4pt rgba(0,0,0.05);
+  padding:4px 16px;
+  color:white;
+}
+#addStock{
+  font-size:17px;
+}
+#listingBlock{
+  margin-top:10%;
+  width:400px;
+  height:200px;
+  padding:10px;
+  background: #ccc;
+  border:2px solid white;
+  border-radius:20px;
+  
+}
+.size-p{
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: space-between;
+  margin-left:-4.5%;
+  margin-top:-5%;
+  z-index: 0;
+}
+.size-6c{
+  position:fixed;
+  top:20.7%;
+  margin-left:4%;
+  padding:5px;
+  background:black;
+  border-radius:50%;
+  border:1px solid #1899ff;
+  
+}
+#carousel{
+  display:flex;
+  overFlow-x:auto;
+  height:54%;
+  width:100%;
+  margin-bottom:8px;
+}
+.userPicture{
+  position:fixed;
+  top:10%;
+}
+    </style>
+</head>
+<body>
+    <!--App heading -->
+   <div class="heading_num">
+      <h1>Boom Shift👻</h1>
+      
+    <span class="dot dot1"></span>
+    <span class="dot dot2"></span>
+    <span class="dot dot3"></span>
+    <span class="dot dot4"></span>
+    <span class="dot dot5"></span>
+</div>
+ <div class="ellipsis" id="popup-btn">
+       <span></span>
+       <span></span>
+       <span></span>
+</div>
+ <!-- Nav code -->
+  <div style="display: none;" id='popup-page' class="nav_bar_container">
+   <span>
+          <p id="ActivateS" class="nav_items"><svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="40" cy="40" r="25" stroke="white" stroke-width="8" fill="none" />
+  <line x1="55" y1="55" x2="80" y2="80" stroke="white" stroke-width="9" />
+</svg><i class="fa fa-arrow-right"></i>Search</p>
+     <p class="nav_items" onclick="lookForMkt()"><svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+  <path d="M5.223 2.25c-.497 0-.974.198-1.325.55l-1.3 1.298A3.75 3.75 0 0 0 7.5 9.75c.627.47 1.406.75 2.25.75.844 0 1.624-.28 2.25-.75.626.47 1.406.75 2.25.75.844 0 1.623-.28 2.25-.75a3.75 3.75 0 0 0 4.902-5.652l-1.3-1.299a1.875 1.875 0 0 0-1.325-.549H5.223Z" />
+  <path fill-rule="evenodd" d="M3 20.25v-8.755c1.42.674 3.08.673 4.5 0A5.234 5.234 0 0 0 9.75 12c.804 0 1.568-.182 2.25-.506a5.234 5.234 0 0 0 2.25.506c.804 0 1.567-.182 2.25-.506 1.42.674 3.08.675 4.5.001v8.755h.75a.75.75 0 0 1 0 1.5H2.25a.75.75 0 0 1 0-1.5H3Zm3-6a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75v-3Zm8.25-.75a.75.75 0 0 0-.75.75v5.25c0 .414.336.75.75.75h3a.75.75 0 0 0 .75-.75v-5.25a.75.75 0 0 0-.75-.75h-3Z" clip-rule="evenodd" />
+</svg><i class="fa fa-home"></i>Market</li>
+    
+    <li class="nav_items"><svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+  <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
+  <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
+</svg><i class="fa fa-bell"></i>Notifications</li>
+
+     <li class="nav_items" id="profile"><i class="fa fa-profile"><svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+  <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-5.5-2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM10 12a5.99 5.99 0 0 0-4.793 2.39A6.483 6.483 0 0 0 10 16.5a6.483 6.483 0 0 0 4.793-2.11A5.99 5.99 0 0 0 10 12Z" clip-rule="evenodd" />
+</svg></i>Profile</li>
+
+  <li class="nav_items" id="myGarage">
+    <i class ="fa fa-profile"><svg width="32" height="32" viewBox= "0 0 60 60"  fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="24" width="48" height="32" fill="none" stroke="white" stroke-width="2"/>
+  <polygon points="32,8 6,24 58,24" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="16" y="32" width="32" height="16" fill="gray" stroke="white" stroke-width="2"/>
+  <line x1="16" y1="40" x2="48" y2="40" stroke="#fff" stroke-width="2"/>
+  <line x1="16" y1="36" x2="48" y2="36" stroke="white" stroke-width="2"/>
+</svg></i>My garage <p id="caption" style="display:none;">(Wishlist&Order/s)</p></li>
+
+ <li class="nav_items" id="abS"><i class="fa fa-location-arrow"><svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+</svg></i>About Us</p>
+
+     <li class="nav_items" id="more"><i class="fa fa-star"><svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+  <path d="M2 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM12.5 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+</svg></i>More</li>
+   <ul id="secList"style="display:none">
+     <li class="sLb" id="bookListNg" >Book to view</li>
+     <li class="sLb">My providers</li>
+     <li class="sLb" id="bookListNg">licenses</li>
+     <li class="sLb">Ts & Cs</li>
+   </ul>
+ </div>
+ </div>
+ <!--Main page here -->
+ <div id="profile-listingP">
+   <div id="profilePCntna">
+   <div id="profilePreview">
+  <img id="profilePic" style="width:120px; height:120px; border-radius:50%;" src=``/>
+  </div>
+<!--  <img id="profilePic" src="default.jpg" alt="Profile Picture" style="width:100px; height:100px; border-radius:50%;"> -->
+  <label for="profileInput" capture="camera" class="FAB"><svg width="22" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6c">
+  <path d="M12 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 12 9Z" />
+  <path fill-rule="evenodd" d="M9.344 3.071a49.52 49.52 0 0 1 5.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 0 0 1.11-.71l.822-1.315a2.942 2.942 0 0 1 2.332-1.39ZM6.75 12.75a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Zm12-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+</svg></label><input type="file" id="profileInput" accept="image/*" style="display:none;">
+</div>
+   <h2 id="Username"></h2>
+ <!--  <p id="uStatus"><em>Online</em></p>-->
+   <p id"number"></p>
+   <p id="email"></p>
+   <div id="buttons">
+    <button id="verify" class="btn">Get Verified</button>
+   <button id="editProfile" class="btn">Edit Profile</button>
+   <button id="addStock" class="btn1"><strong>+</strong></button>
+   </div>
+   
+   <div id="listingBlock">
+     <p style="color:black;">My listings</p>
+    </div>
+    </div>
+ <!--providers js below -->
+ <script>
+   const popupButton = document.getElementById("popup-btn");
+const popupPage = document.getElementById("popup-page");
+ 
+ popupButton.addEventListener("click",()=>{
+   popupPage.style.display =
+   popupPage.style.display === "block"?
+   "none":"block";
+   console.log('pressed')
+ });
+ 
+ document.addEventListener("click",(event)=>{
+   if(!
+   popupButton.contains(event.target)
+   &&!
+   popupPage.contains(event.target))
+   {
+     popupPage.style.display="none";
+   }
+ });
+ const more = document.getElementById("more");
+const sL = document.getElementById("secList");
+
+more.addEventListener('click',()=>{
+  sL.style.display= "";
+  sL.styledisplay=== "block"?                "none":"block";
+});
+document.addEventListener('click',(event)=>{
+  if(!more.contains(event.target)
+  &&!
+  sL.contains(event.target)){
+    sL.style.display="none";
+  }
+});
+
+ const stock = document.getElementById('addStock');
+ 
+ stock.addEventListener('click',()=>{
+   alert('cannot add stock at the moment')
+ })
+ let Users = JSON.parse(localStorage.getItem('dealers')) || [];
+let currentUser = Users[Users.length - 1];
+
+document.getElementById('Username').innerText = currentUser.name;
+ const num = document.getElementById('number')
+// num.innerText = currentUser.pNumber;
+//document.getElementById('email').innerText = currentUser.email;
+const profileInput = document.getElementById('profileInput');
+const profilePic = document.getElementById('profilePic');
+
+// Load saved image from localStorage on load
+window.addEventListener('DOMContentLoaded', () => {
+  const savedImage = localStorage.getItem('userProfilePic');
+  if (savedImage) {
+    profilePic.src = savedImage;
+  }
+});
+
+// When user selects a new image
+profileInput.addEventListener('change', () => {
+  const file = profileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      profilePic.src = e.target.result;
+      localStorage.setItem('userProfilePic', e.target.result); // Save base64 to localStorage
+    };
+    reader.readAsDataURL(file);
+  }
+});
+ </script>
+</body>
+</html>

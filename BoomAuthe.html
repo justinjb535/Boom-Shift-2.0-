@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="devGarage.css"/>
+</head>
+
+<body>
+      <header>
+    <img width="350" height="280" src="BoomShift.png" alt="BoomShift" />
+  </header>
+ <div class="form_box">
+<!--<section> -->
+   <form id="signUp-form" accept-charset="utf-8">
+     <h2>Sign Up</h2>
+    <div class="input_box">
+       <input type="text" id="Username" required/> 
+      <label for="">Username :</label>
+   </div>
+    <div class="input_box">
+      <input type="email" id="Email" required/>
+      <label for="">Email :</label>
+    </div>
+     <div class="input_box">  
+     <input type="number" id="phoneNumber" required/>
+        <label for="">phoneNumber :</label>
+     </div>
+     <div class="input_box">
+       <input type="password" id="password" required/>
+       <label for="">Password :</label>
+     </div>
+     <select id="selection" required="required">
+       <option value=''>none</option>
+       <option value="buyer">Buyer</option>
+       <option value="D/A">Dealer/agent</option>
+     </select>
+     <div id="bBox">
+     <button id="SignUp">Sign Up</button>
+     </div>
+   </form>
+   <button onclick="resetAll()">delete users </button>
+  </div>
+</section>
+<script src="devGarage.js"></script>
+</body>
+</html>
