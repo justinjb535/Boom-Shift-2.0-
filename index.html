@@ -227,6 +227,14 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Redirect if not logged in
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "BoomAuthe.html"; // or login.html
+    }
+  });
 </script>
 </body>
 </html>
