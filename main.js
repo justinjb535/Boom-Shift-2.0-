@@ -6,6 +6,7 @@ const rN = document.getElementById("redNote");
    popupPage.style.display=
    popupPage.style.display=== "block"?
    "none":"block";
+   cNter.style.display = "none";
  });
  
  document.addEventListener("click",(event)=>{
@@ -134,9 +135,13 @@ posts.forEach((product,index) => {
   productList.appendChild(div);
   
   const myWishlist = document.getElementById('myWishlist');
+const cNter = document.getElementById('countdis');
+
 function addToWishlist(product,index) {
    //console.log(countBe); 
   let wishlistOne = JSON.parse(localStorage.getItem('wishlistOne')) || [];
+cNter.style.display = 'block';
+rN.style.display = 'block'
   const id = Date.now().toString(36) + Math.random().toString(36).substr(2)
   wishlistOne.push({id,...product});
   localStorage.setItem('wishlistOne', JSON.stringify(wishlistOne));
@@ -327,6 +332,7 @@ myG.addEventListener('click',()=>{
   console.log(myGp.style.display);
   pageHim.style.display = "none";
   absP.style.display = "none";
+  rN.style.display = "none";
 });
 pb1.addEventListener('click',()=>{
   console.log('pressed');
