@@ -547,8 +547,7 @@
 
   }
   #alert{
-  /*margin-top:6%; */
-  /* margin-bottom:50%; */
+  margin-top:6%; 
   color: black;
   text-align:center;
   }
@@ -647,6 +646,16 @@
     background: red;
     color:white;
 }
+#redNote{
+    position:fixed;
+    top:42.4%;
+    left:67%;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    z-index:1000;
+}
+
 #message{
     position:fixed;
     top:0;
@@ -744,8 +753,4 @@ footer{
   border:none;
   border-radius:29px;
   background:#1899ff;
-}
-
-#hello{
-  margin-top:50%;
 }
