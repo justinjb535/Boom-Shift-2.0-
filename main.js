@@ -1,5 +1,6 @@
 const popupButton = document.getElementById("popup-bttn");
 const popupPage = document.getElementById("popup-page");
+const rN = document.getElementById("redNote");
  
  popupButton.addEventListener("click",()=>{
    popupPage.style.display=
@@ -133,9 +134,7 @@ posts.forEach((product,index) => {
   productList.appendChild(div);
   
   const myWishlist = document.getElementById('myWishlist');
-  let wishlistCount = 0;
 function addToWishlist(product,index) {
-  wishlistCount++;  
    //console.log(countBe); 
   let wishlistOne = JSON.parse(localStorage.getItem('wishlistOne')) || [];
   const id = Date.now().toString(36) + Math.random().toString(36).substr(2)
@@ -143,10 +142,10 @@ function addToWishlist(product,index) {
   localStorage.setItem('wishlistOne', JSON.stringify(wishlistOne));
   
   let nT = document.getElementById("numberText");
-   nT.innerHTML =`<p id="countdis" style="text-align:center;">${wishlistCount}</p>
+   nT.innerHTML =`
    <div id="message">Added <em><strong>${product.message}</strong></em> to Wishlist <br> you can go to wishlist and double tap to remove product </div>`;
  console.log("message received ")
- updateCounter('countdis',wishlistCount)
+
 let mSS = document.getElementById("message");
    setTimeout(()=>{
        mSS.style.display = "none";
