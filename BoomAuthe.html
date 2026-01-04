@@ -180,9 +180,9 @@ const roleSelect = document.getElementById('selection');
         alert("Signed up successfully!");
 
         // Redirect based on role
-        if (role === 'buyer') {
+        if (roleSelect.value === 'buyer') {
           window.location.href = "index.html";
-        } else if (role === 'seller') {
+        } else if (roleSelect.value === 'seller') {
           window.location.href = "PD.html";
         }
 
