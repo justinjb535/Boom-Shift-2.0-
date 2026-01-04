@@ -158,11 +158,12 @@ button {
     }
   });
 
-    signUpBtn.addEventListener('click', () => {
+    signUpBtn.addEventListener('click',async() => {
   const username = document.getElementById('username').value.trim();
   const email = document.getElementById('Email').value.trim();
   const phoneNumber = document.getElementById('phoneNumber').value.trim();
   const password = document.getElementById('password').value;
+
 
   if (roleSelect.value && username && email && phoneNumber && password) {
     // All fields are filled, proceed with sign-up
@@ -174,6 +175,18 @@ button {
   } else {
     alert("Please fill in all required fields to complete sign-up");
   }
+try {
+      const userCred = await createUserWithEmailAndPassword(window.auth, email, password);
+      const user = userCred.user;
+
+      await setDoc(doc(window.db, "users", user.uid), {
+        email: user.email,
+        role: role
+      });
+alert("Signed up successfully!");
+    } catch (err) {
+      alert(err.message);
+    }
 });
 
   </script>
