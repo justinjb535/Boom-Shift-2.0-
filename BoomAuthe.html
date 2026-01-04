@@ -9,6 +9,9 @@
      body{
       background:black;
       text-align:center;
+      padding:0;
+      margin:0;
+      width:100%;
     }
       .form_box {
   position: relative;
@@ -179,7 +182,7 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 
       await setDoc(doc(window.db, "users", user.uid), {
         email: user.email,
-        role: roleSelect
+        role: roleSelect.value
       });
 alert("Signed up successfully!");
     } catch (err) {
