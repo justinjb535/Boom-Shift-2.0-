@@ -126,12 +126,10 @@ button {
    </form>
   </div>
  <script type="module">
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
     authDomain: "boom-shift.firebaseapp.com",
@@ -141,64 +139,60 @@ button {
     appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
- window.auth = getAuth(app);
- window.db = getFirestore(app);
-
-  import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-
-// sign Up logic here 
-    const roleSelect = document.getElementById('selection');
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+[01/04, 15:00] ChatGPT: const roleSelect = document.getElementById('selection');
   const signUpBtn = document.getElementById('SignUp');
-  const wd = document.getElementById("words")
+  const wd = document.getElementById("words");
 
   roleSelect.addEventListener('change', () => {
     if (roleSelect.value === 'buyer' || roleSelect.value === 'seller') {
       signUpBtn.disabled = false;
       wd.innerHTML = `<p style="color:green;">Role chosen successfully</p>`;
-      signUpBtn.style.background = "#fff"
+      signUpBtn.style.background = "#fff";
     } else {
       signUpBtn.disabled = true;
       wd.innerHTML = `<p style="color:orange;">Please select Role</p>`;
-      signUpBtn.style.background = "#333"
+      signUpBtn.style.background = "#333";
     }
   });
 
-    signUpBtn.addEventListener('click',async() => {
-  const username = document.getElementById('username').value.trim();
-  const email = document.getElementById('Email').value.trim();
-  const phoneNumber = document.getElementById('phoneNumber').value.trim();
-  const password = document.getElementById('password').value;
+  signUpBtn.addEventListener('click', async () => {
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('Email').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const password = document.getElementById('password').value;
+    const role = roleSelect.value;
 
+    if (role && username && email && phoneNumber && password) {
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
 
-  if (roleSelect.value && username && email && phoneNumber && password) {
-   try {
-      const userCred = await createUserWithEmailAndPassword(window.auth, email, password);
-      const user = userCred.user;
+        await setDoc(doc(db, "users", user.uid), {
+          username,
+          email: user.email,
+          phoneNumber,
+[01/04, 15:00] ChatGPT: role
+        });
 
-      await setDoc(doc(window.db, "users", user.uid), {
-        email: user.email,
-        role: roleSelect.value
-      });
-alert("Signed up successfully!");
-    } catch (err) {
-      alert(err.message);
+        alert("Signed up successfully!");
+
+        // Redirect based on role
+        if (role === 'buyer') {
+          window.location.href = "index.html";
+        } else if (role === 'seller') {
+          window.location.href = "PD.html";
+        }
+
+      } catch (err) {
+        alert("Signup error: " + err.message);
+      }
+    } else {
+      alert("Please fill in all required fields to complete sign-up");
     }
-    // All fields are filled, proceed with sign-up
-    if (roleSelect.value === 'buyer') {
-      window.location.href = "index.html";
-    } else if (roleSelect.value === 'seller') {
-      window.location.href = "PD.html";
-    }
-  } else {
-    alert("Please fill in all required fields to complete sign-up");
-  }
-
-});
-
-  </script>
+  });
+</script>
 </body>
 </html>
