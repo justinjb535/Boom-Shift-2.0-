@@ -358,42 +358,7 @@ abSb.addEventListener('click',()=>{
 }); */
 
 // profile code here 
-let Users = JSON.parse(localStorage.getItem('bsUsers')) || [];
-let currentUser = Users[Users.length - 1];
 
-document.getElementById('name').innerText = currentUser.name;
-document.getElementById('number').innerText = currentUser.pNumber;
-document.getElementById('email').innerText = currentUser.email;
-document.getElementById('editProfile').addEventListener('click',()=>{
-  let newName = prompt('Enter your new name');
-  if(newName){
-    currentUser.name = newName;
-    users[users.length -1 ] = currentUser = currentUser;
-    localStorage.setItem('users',JSON.stringify(users));
-    document.getElementById('name').innerText = newName;
-  }
-}) 
-
-const profileInput = document.getElementById('profileInput');
-const profilePic = document.getElementById('profilePic');
-
-// Load saved image from localStorage on load
-window.addEventListener('DOMContentLoaded', () => {
-  const savedImage = localStorage.getItem('userProfilePic');
-  if (savedImage) {
-    profilePic.src = savedImage;
-  }
-});
-
-// When user selects a new image
-profileInput.addEventListener('change', () => {
-  const file = profileInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      profilePic.src = e.target.result;
-      localStorage.setItem('userProfilePic', e.target.result); // Save base64 to localStorage
-    };
-    reader.readAsDataURL(file);
-  }
-});
+/*document.getElementById('editProfile').addEventListener('click',()=>{
+  let newName = prompt('Enter your new name');*/
+  
