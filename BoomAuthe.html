@@ -142,6 +142,11 @@ button {
   const app = initializeApp(firebaseConfig);
  window.auth = getAuth(app);
  window.db = getFirestore(app);
+
+  import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
 </script>
   <script>
     const roleSelect = document.getElementById('selection');
@@ -168,16 +173,7 @@ button {
 
 
   if (roleSelect.value && username && email && phoneNumber && password) {
-    // All fields are filled, proceed with sign-up
-    if (roleSelect.value === 'buyer') {
-      window.location.href = "index.html";
-    } else if (roleSelect.value === 'seller') {
-      window.location.href = "PD.html";
-    }
-  } else {
-    alert("Please fill in all required fields to complete sign-up");
-  }
-try {
+   try {
       const userCred = await createUserWithEmailAndPassword(window.auth, email, password);
       const user = userCred.user;
 
@@ -189,6 +185,16 @@ alert("Signed up successfully!");
     } catch (err) {
       alert(err.message);
     }
+    // All fields are filled, proceed with sign-up
+    if (roleSelect.value === 'buyer') {
+      window.location.href = "index.html";
+    } else if (roleSelect.value === 'seller') {
+      window.location.href = "PD.html";
+    }
+  } else {
+    alert("Please fill in all required fields to complete sign-up");
+  }
+
 });
 
   </script>
