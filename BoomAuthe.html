@@ -179,7 +179,7 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 
       await setDoc(doc(window.db, "users", user.uid), {
         email: user.email,
-        role: role
+        role: roleSelect
       });
 alert("Signed up successfully!");
     } catch (err) {
