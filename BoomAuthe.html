@@ -4,8 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-    <link rel="stylesheet" href="devGarage.css"/>
+    <title>BoomShift signUp page</title>
+    <style>
+     body{
+      background:black;
+      text-align:center;
+    }
+      .form_box {
+  position: relative;
+  width: 400px;
+  height: 540px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction:column;
+}
+h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+}
+.input_box {
+  position: relative;
+  margin: 30px 0;
+  width: 310px;
+  border-bottom: 2px solid #fff;
+}
+
+.input_box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 1em;
+  transition: .5s;
+}
+
+input:focus~label,
+input:valid~label {
+  top: -5px;
+}
+
+.input_box input {
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  padding: 0 35px 0 5px;
+  color: #fff;
+}
+
+.input_box ion-icon {
+  position: absolute;
+  right: 8px;
+  color: #fff;
+  font-size: 1.2em;
+  top: 20px;
+}
+button {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  background: #333;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+}
+#bBox{
+  margin-top:5%;
+  
+}
+      </style>
 </head>
 
 <body>
@@ -43,7 +121,41 @@
    </form>
    <button onclick="resetAll()">delete users </button>
   </div>
-</section>
-<script src="devGarage.js"></script>
+  <script>
+    const roleSelect = document.getElementById('selection');
+  const signUpBtn = document.getElementById('SignUp');
+  const wd = document.getElementById("words")
+
+  roleSelect.addEventListener('change', () => {
+    if (roleSelect.value === 'buyer' || roleSelect.value === 'seller') {
+      signUpBtn.disabled = false;
+      wd.innerHTML = `<p style="color:green;">Role chosen successfully</p>`;
+      signUpBtn.style.background = "#fff"
+    } else {
+      signUpBtn.disabled = true;
+      wd.innerHTML = `<p style="color:orange;">Please select Role</p>`;
+      signUpBtn.style.background = "#333"
+    }
+  });
+
+    signUpBtn.addEventListener('click', () => {
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('Email').value.trim();
+  const phoneNumber = document.getElementById('phoneNumber').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (roleSelect.value && username && email && phoneNumber && password) {
+    // All fields are filled, proceed with sign-up
+    if (roleSelect.value === 'buyer') {
+      window.location.href = "index.html";
+    } else if (roleSelect.value === 'seller') {
+      window.location.href = "PD.html";
+    }
+  } else {
+    alert("Please fill in all required fields to complete sign-up");
+  }
+});
+
+  </script>
 </body>
 </html>
