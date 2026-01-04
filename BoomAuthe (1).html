@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BoomShift signUp page</title>
+    <style>
+     body{
+      background:black;
+      text-align:center;
+      padding:0;
+      margin:0;
+      width:100%;
+    }
+      .form_box {
+  position: relative;
+  width: 400px;
+  height: 540px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction:column;
+}
+h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+}
+.input_box {
+  position: relative;
+  margin: 30px 0;
+  width: 310px;
+  border-bottom: 2px solid #fff;
+}
+
+.input_box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 1em;
+  transition: .5s;
+}
+
+input:focus~label,
+input:valid~label {
+  top: -5px;
+}
+
+.input_box input {
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  padding: 0 35px 0 5px;
+  color: #fff;
+}
+
+.input_box ion-icon {
+  position: absolute;
+  right: 8px;
+  color: #fff;
+  font-size: 1.2em;
+  top: 20px;
+}
+button {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  background: #333;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+}
+#bBox{
+  margin-top:5%;
+  
+}
+      </style>
+</head>
+
+<body>
+      <header>
+    <img width="350" height="280" src="boomshift (1).png" alt="BoomShift" />
+  </header>
+ <div class="form_box">
+<!--<section> -->
+   <form id="signUp-form" accept-charset="utf-8">
+     <h2>Sign Up</h2>
+    <div class="input_box">
+       <input type="text" id="username" required/> 
+      <label for="">Username :</label>
+   </div>
+    <div class="input_box">
+      <input type="email" id="Email" required/>
+      <label for="">Email :</label>
+    </div>
+     <div class="input_box">  
+     <input type="number" id="phoneNumber" required/>
+        <label for="">phoneNumber :</label>
+     </div>
+     <div class="input_box">
+       <input type="password" id="password" required/>
+       <label for="">Password :</label>
+     </div>
+     <select id="selection" required="required">
+       <option value=''>none</option>
+       <option value="buyer">Buyer</option>
+       <option value="seller">Dealer/agent</option>
+     </select>
+     <p id="words" style="color:orange;">Please select Role</p>
+
+     <div id="bBox">
+     <!-- keep this as submit (semantic) and handle via form 'submit' -->
+     <button id="SignUp" type="submit">Sign Up</button>
+     </div>
+   </form>
+  </div>
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+    authDomain: "boom-shift.firebaseapp.com",
+    projectId: "boom-shift",
+    storageBucket: "boom-shift.firebasestorage.app",
+    messagingSenderId: "842513407574",
+    appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const roleSelect = document.getElementById('selection');
+  const signUpBtn = document.getElementById('SignUp');
+  const wd = document.getElementById("words");
+  const form = document.getElementById('signUp-form');
+
+  // start with button disabled until a role is chosen
+  signUpBtn.disabled = true;
+  signUpBtn.style.background = "#333";
+
+  roleSelect.addEventListener('change', () => {
+    if (roleSelect.value === 'buyer' || roleSelect.value === 'seller') {
+      signUpBtn.disabled = false;
+      wd.textContent = 'Role chosen successfully';
+      wd.style.color = 'green';
+      signUpBtn.style.background = "#fff";
+    } else {
+      signUpBtn.disabled = true;
+      wd.textContent = 'Please select Role';
+      wd.style.color = 'orange';
+      signUpBtn.style.background = "#333";
+    }
+  });
+
+  // Use form submit so browser validation runs, but prevent default to avoid page reload
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('Email').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const password = document.getElementById('password').value;
+    const role = roleSelect.value;
+
+    if (role && username && email && phoneNumber && password) {
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          username,
+          email: user.email,
+          phoneNumber,
+          role
+        });
+
+        alert("Signed up successfully!");
+
+        // Redirect based on role
+        if (role === 'buyer') {
+          window.location.href = "index.html";
+        } else if (role === 'seller') {
+          window.location.href = "PD.html";
+        }
+
+      } catch (err) {
+        alert("Signup error: " + err.message);
+      }
+    } else {
+      alert("Please fill in all required fields to complete sign-up");
+    }
+  });
+</script>
+</body>
+</html>
