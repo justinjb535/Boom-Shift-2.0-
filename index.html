@@ -28,29 +28,27 @@ import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12
 // Redirect if not logged in
   // onAuthStateChanged callback must be async because we use await
 onAuthStateChanged(auth, async (user) => {
- if (user) {
- // User is signed in — load their Firestore document
- try {
- const docRef = doc(db, "users", user.uid);
- const docSnap = await getDoc(docRef);
-   if (docSnap.exists()) {
-    const userData = docSnap.data();
-    document.getElementById("Name").textContent = `Name: ${userData.username || ""}`;
-    document.getElementById("Email").textContent = `Email: ${userData.email || user.email || ""}`;
-    document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber || ""}`;
+  if (user) {
+    // User is signed in — load their Firestore document
+    try {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        document.getElementById("Name").textContent = `Name: userData.username || ""`;
+        document.getElementById("Email").textContent = `Email:{userData.email || user.email || ""}`;
+        document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber || ""}`;
+      } else {
+        console.log("User document not found in Firestore.");
+      }
+    } catch (err) {
+      console.error("Error fetching user doc:", err);
+    }
   } else {
-    console.log("User document not found in Firestore.");
+    // Not logged in — redirect to login page
+    window.location.href = "BoomAuthecation.html";
   }
-} catch (err) {
-  console.error("Error fetching user doc:", err);
-} 
-}else {
- // Not logged in — redirect to login page
- // Use the correct filename. Replace with the actual login file name if different.
- window.location.href = "BoomAuthecation.html";
- }
 });
-
 </script>
   
   <!-- HTML -->
