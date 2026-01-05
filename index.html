@@ -8,55 +8,7 @@
   <title>BoomShift.com</title>
   
   <link rel="stylesheet" href="styleBS.css">
-  <script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
-    authDomain: "boom-shift.firebaseapp.com",
-    projectId: "boom-shift",
-    storageBucket: "boom-shift.firebasestorage.app",
-    messagingSenderId: "842513407574",
-    appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-onAuthStateChanged(auth, async (user) => {
-if (!user) {
-      console.log("User not logged in, redirecting...");
-      window.location.href = "BoomAuthe (1).html"; // Make sure file name is correct
-    } else {
-      console.log("User is logged in:", user.uid);
-    }
-  });
-  if (user) {
-    // User is signed in — load their Firestore document
-    try {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
-        document.getElementById("Name").textContent = ` ${userData.username || ""}`;
-        document.getElementById("Email").textContent = `${userData.email || user.email || ""}`;
-        document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber || ""}`;
-      } else {
-        console.log("User document not found in Firestore.");
-      }
-    } catch (err) {
-      console.error("Error fetching user doc:", err);
-    }
-  } else {
-    // Not logged in — redirect to login page
-    window.location.href = "BoomAuthe (1).html";
-  }
-});
-</script>
   
   <!-- HTML -->
   <style>
