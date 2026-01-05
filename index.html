@@ -27,9 +27,11 @@ import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12
   const auth = getAuth(app);
   const db = getFirestore(app);
 
- //populating user data 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
+// Redirect if not logged in
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "BoomAuthecation.html"; // or login.html
+  
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
 
@@ -44,12 +46,7 @@ const userData = docSnap.data();
     window.location.href = "BoomAuthe.html";
   }
 });
-
-// Redirect if not logged in
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "BoomAuthecation.html"; // or login.html
-    }
+  }
   });
 
 </script>
