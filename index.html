@@ -26,7 +26,15 @@ import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12
   const db = getFirestore(app);
 
 // Redirect if not logged in
-  
+  // onAuthStateChanged callback must be async because we use await
+onAuthStateChanged(auth, async (user) => {
+ if (user) {
+ // User is signed in — load their Firestore document
+ try {
+ const docRef = doc(db, "users", user.uid);
+ const docSnap = await getDoc(docRef);
+
+
 </script>
   
   <!-- HTML -->
