@@ -54,8 +54,6 @@ onAuthStateChanged(auth, async (user) => {
     // Not logged in — redirect to login page
     window.location.href = "BoomAuthecation.html";
   }
-});
-
 proPicIn.addEventListener('click'async()=>{
   const file = proPicIn.files[0]
  if (!file) return alert('no selected picture');
@@ -74,6 +72,9 @@ profilePic: downloadURL
 
  proPrev.src = user.Data.profilePic || "default.png";
 });
+});
+
+
 </script>
   
   <!-- HTML -->
