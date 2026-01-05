@@ -34,7 +34,9 @@ onAuthStateChanged(auth, async (user) => {
       const role = userDoc.data().role;
       if (role === "seller") {
         window.location.href = "PD.html"; // redirect seller to seller dashboard
-      }
+      }else if (role === "buyer") {
+        window.location.href = "BoomShift.html";
+     }
     }
   } else {
     window.location.href = "BoomAuthecation.html"; // force login
