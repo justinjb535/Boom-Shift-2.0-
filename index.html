@@ -26,27 +26,7 @@ import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12
   const db = getFirestore(app);
 
 // Redirect if not logged in
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "BoomAuthecation.html"; // or login.html
   
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-const userData = docSnap.data();
-      document.getElementById("Name").textContent = `Name: userData.username`;
-      document.getElementById("Email").textContent = `Email:{userData.email}`;
-      document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber}`;
-    }
-  } else {
-    // Not logged in, redirect to login
-    window.location.href = "BoomAuthe.html";
-  }
-});
-  }
-  });
-
 </script>
   
   <!-- HTML -->
