@@ -8,6 +8,8 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import{getStorage,ref,uploadBytes,getDownloadURL}from "https://www.gstatic.com/firebase JS/12.7.0/firebase-storage.js";
+import{updateDoc}"https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
   // Your web app's Firebase configuration
@@ -24,6 +26,10 @@ import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+  const proPicIn = document.getElementById('profileInput');
+  const proPrev = document.getElementById('profilePreview');
+
+  
 
 // Redirect if not logged in
   // onAuthStateChanged callback must be async because we use await
@@ -48,6 +54,25 @@ onAuthStateChanged(auth, async (user) => {
     // Not logged in — redirect to login page
     window.location.href = "BoomAuthecation.html";
   }
+});
+
+proPicIn.addEventListener('click'async()=>{
+  const file = proPicIn.files[0]
+ if (!file) return alert('no selected picture');
+  const user = auth.currentUser;
+ if (!user) return alert('Not logged in yet');
+ 
+ const storageRef = ref(storage,`profilePics/${user.uid}`);
+ await uploadBytes(storageRef,file); 
+ const downloadURL = await DownloadURL(storageRef)
+
+await updateDoc(doc(db,"users",user.uid){
+profilePic: downloadURL
+});
+  proPrrev.src = downloadURL;
+  alert('profile pic updated);
+
+ proPrev.src = user.Data.profilePic || "default.png";
 });
 </script>
   
