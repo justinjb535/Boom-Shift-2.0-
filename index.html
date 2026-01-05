@@ -8,52 +8,54 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL}from "https://www.gstatic.com/firebase JS/12.7.0/firebase-storage.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
-  authDomain: "boom-shift.firebaseapp.com",
-  projectId: "boom-shift",
-  storageBucket: "boom-shift.firebasestorage.app",
-  messagingSenderId: "842513407574",
-  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
-};
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+    authDomain: "boom-shift.firebaseapp.com",
+    projectId: "boom-shift",
+    storageBucket: "boom-shift.firebasestorage.app",
+    messagingSenderId: "842513407574",
+    appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+  };
 
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const proPicIn = document.getElementById('profileInput');
+  const proPrev = document.getElementById('profilePreview');
+
+  
+
+// Redirect if not logged in
+  // onAuthStateChanged callback must be async because we use await
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "BoomAuthecation.html";
-    return;
-  }
-
-  try {
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    const elName = document.getElementById("Name");
-    const elEmail = document.getElementById("Email");
-    const elNumber = document.getElementById("Number");
-    const profilePic = document.getElementById("profilePic");
-
-    if (docSnap.exists()) {
-      const userData = docSnap.data();
-      if (elName) elName.textContent = `Name: ${userData.username ?? user.displayName ?? ""}`;
-      if (elEmail) elEmail.textContent = `Email: ${userData.email ?? user.email ?? ""}`;
-      if (elNumber) elNumber.textContent = `Phone: ${userData.phoneNumber ?? ""}`;
-      if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
-    } else {
-      if (elName) elName.textContent = `Name: ${user.displayName ?? ""}`;
-      if (elEmail) elEmail.textContent = `Email: ${user.email ?? ""}`;
-      if (elNumber) elNumber.textContent = `Phone: ${user.phoneNumber ?? ""}`;
-      if (profilePic && user.photoURL) profilePic.src = user.photoURL;
+  if (user) {
+    // User is signed in — load their Firestore document
+    try {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        document.getElementById("Name").textContent = ` ${userData.username || ""}`;
+        document.getElementById("Email").textContent = ` ${userData.email || user.email || ""}`;
+        document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber || ""}`;
+      } else {
+        console.log("User document not found in Firestore.");
+      }
+    } catch (err) {
+      console.error("Error fetching user doc:", err);
     }
-  } catch (err) {
-    console.error("Error fetching user document:", err);
+  } else {
+    // Not logged in — redirect to login page
+    window.location.href = "BoomAuthecation.html";
   }
+
 });
+
 </script>
   
   <!-- HTML -->
