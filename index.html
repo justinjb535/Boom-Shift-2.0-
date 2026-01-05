@@ -43,7 +43,12 @@ onAuthStateChanged(auth, async (user) => {
   }
 } catch (err) {
   console.error("Error fetching user doc:", err);
-}
+} else {
+ // Not logged in — redirect to login page
+ // Use the correct filename. Replace with the actual login file name if different.
+ window.location.href = "BoomAuthecation.html";
+ }
+});
 
 </script>
   
