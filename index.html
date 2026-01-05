@@ -35,8 +35,8 @@ onAuthStateChanged(auth, async (user) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        document.getElementById("Name").textContent = `Name: userData.username || ""`;
-        document.getElementById("Email").textContent = `Email:{userData.email || user.email || ""}`;
+        document.getElementById("Name").textContent = ` ${userData.username || ""}`;
+        document.getElementById("Email").textContent = ` ${userData.email || user.email || ""}`;
         document.getElementById("Number").textContent = `Phone: ${userData.phoneNumber || ""}`;
       } else {
         console.log("User document not found in Firestore.");
