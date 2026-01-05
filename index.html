@@ -26,6 +26,23 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+ // ✅ Role check and redirect logic
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const role = docSnap.data().role;
+        if (role === "seller") {
+          window.location.href = "PD.html"; // redirect sellers
+        }
+        // buyers stay here on index.html
+      }
+    } else {
+      window.location.href = "BoomAuthecation.html"; // not logged in
+    }
+  });
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     // Not logged in — redirect to the login page (use the correct filename)
