@@ -6,59 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Provider's dashboard</title>
  <link rel="icon" href="BSicon.png" type="image/png">
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
-  authDomain: "boom-shift.firebaseapp.com",
-  projectId: "boom-shift",
-  storageBucket: "boom-shift.firebasestorage.app",
-  messagingSenderId: "842513407574",
-  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.addEventListener('DOMContentLoaded', () => {
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "BoomAuthecation.html";
-      return;
-    }
-
-    try {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      const elName = document.getElementById("name");
-      const elEmail = document.getElementById("email");
-      const elNumber = document.getElementById("number");
-      const profilePic = document.getElementById("profilePic");
-
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
-        if (elName) elName.textContent = userData.username ?? user.displayName ?? "";
-        if (elEmail) elEmail.textContent = userData.email ?? user.email ?? "";
-        if (elNumber) elNumber.textContent = userData.phoneNumber ?? "";
-        if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
-      } else {
-        if (elName) elName.textContent = user.displayName ?? "";
-        if (elEmail) elEmail.textContent = user.email ?? "";
-        if (elNumber) elNumber.textContent = user.phoneNumber ?? "";
-        if (profilePic && user.photoURL) profilePic.src = user.photoURL;
-      }
-    } catch (err) {
-      console.error("Error fetching user document:", err);
-    }
-  });
-});
-
-</script>
     <style>
       body{
        font-family:Courier New,Courier;
