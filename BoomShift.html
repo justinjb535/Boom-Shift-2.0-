@@ -14,6 +14,77 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="styleBS.css">
   <link rel="icon" href="BSicon.png" type="image/png">
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+  authDomain: "boom-shift.firebaseapp.com",
+  projectId: "boom-shift",
+  storageBucket: "boom-shift.firebasestorage.app",
+  messagingSenderId: "842513407574",
+  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (location.protocol === 'file:') {
+    console.warn('Serving page over file:// — ES module imports and Firebase may not work. Serve over http(s).');
+  }
+
+  console.log('DOM loaded — registering onAuthStateChanged listener');
+  onAuthStateChanged(auth, async (user) => {
+    console.log('onAuthStateChanged fired. user:', user);
+    if (!user) {
+      console.warn('No authenticated user — redirecting to login');
+      window.location.href = "BoomAuthecation.html";
+      return;
+    }
+
+    console.log('Authenticated user uid:', user.uid);
+    try {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      console.log('Firestore getDoc result:', docSnap.exists ? 'exists' : 'not found', docSnap);
+
+      const elName = document.getElementById("name");
+      const elEmail = document.getElementById("email");
+      const elNumber = document.getElementById("number");
+      const profilePic = document.getElementById("profilePic");
+
+      if (!elName) console.warn('Element with id="name" not found in DOM');
+      if (!elEmail) console.warn('Element with id="email" not found in DOM');
+      if (!elNumber) console.warn('Element with id="number" not found in DOM');
+      if (!profilePic) console.warn('Element with id="profilePic" not found in DOM');
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        console.log('userData from Firestore:', userData);
+
+        if (elName) elName.textContent = userData.username ?? user.displayName ?? '(no name)';
+        if (elEmail) elEmail.textContent = userData.email ?? user.email ?? '(no email)';
+        if (elNumber) elNumber.textContent = userData.phoneNumber ?? '(no phone)';
+        if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
+      } else {
+        // Fallback to Firebase user profile if no Firestore doc
+        console.log('No Firestore doc — using Firebase Auth profile fields');
+        if (elName) elName.textContent = user.displayName ?? '(no name)';
+        if (elEmail) elEmail.textContent = user.email ?? '(no email)';
+        if (elNumber) elNumber.textContent = user.phoneNumber ?? '(no phone)';
+        if (profilePic && user.photoURL) profilePic.src = user.photoURL;
+      }
+    } catch (err) {
+      console.error('Error fetching user document:', err);
+    }
+  });
+});
+</script>
 </head>
 <body>
  <div class="body">
