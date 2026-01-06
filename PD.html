@@ -19,7 +19,60 @@ const firebaseConfig = {
   messagingSenderId: "842513407574",
   appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
 };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
+// 🔒 Block sellers from viewing index.html (buyer side)
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists()) {
+      const role = userDoc.data().role;
+      if (role === "seller") {
+        window.location.href = "PD.html"; // redirect seller to seller dashboard
+      }else if (role === "buyer") {
+        window.location.href = "BoomShift.html";
+     }
+    }
+  } else {
+    window.location.href = "BoomAuthecation.html"; // force login
+  }
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // Not logged in — redirect to the login page (use the correct filename)
+    window.location.href = "BoomAuthecation.html";
+    return;
+  }
+
+  try {
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    const elName = document.getElementById("Name");
+    const elEmail = document.getElementById("Email");
+    const elNumber = document.getElementById("Number");
+    const profilePic = document.getElementById("profilePic");
+
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      if (elName) elName.textContent = `Name: ${userData.username ?? user.displayName ?? ""}`;
+      if (elEmail) elEmail.textContent = `Email: ${userData.email ?? user.email ?? ""}`;
+      if (elNumber) elNumber.textContent = `Phone: ${userData.phoneNumber ?? ""}`;
+      if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
+    } else {
+      if (elName) elName.textContent = `Name: ${user.displayName ?? ""}`;
+      if (elEmail) elEmail.textContent = `Email: ${user.email ?? ""}`;
+      if (elNumber) elNumber.textContent = `Phone: ${user.phoneNumber ?? ""}`;
+      if (profilePic && user.photoURL) profilePic.src = user.photoURL;
+    }
+  } catch (err) {
+    console.error("Error fetching user document:", err);
+  }
+});
+</script>
     <style>
       body{
        font-family:Courier New,Courier;
