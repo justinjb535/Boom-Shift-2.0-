@@ -23,23 +23,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 🔒 Block sellers from viewing index.html (buyer side)
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    if (userDoc.exists()) {
-      const role = userDoc.data().role;
-      if (role === "seller") {
-        window.location.href = "PD.html"; // redirect seller to seller dashboard
-      }else if (role === "buyer") {
-        window.location.href = "BoomShift.html";
-     }
-    }
-  } else {
-    window.location.href = "BoomAuthecation.html"; // force login
-  }
-});
-
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     // Not logged in — redirect to the login page (use the correct filename)
