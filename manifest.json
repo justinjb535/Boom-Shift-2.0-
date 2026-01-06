@@ -3,11 +3,11 @@
   "short_name": "BoomShift",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "         
+  "background_color": "#ffffff"   
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "IMG_20260106 042618.png",
+      "src": "IMG_20260106_042618.png",
       "sizes": "192x192",
       "type": "image/png"
     }
