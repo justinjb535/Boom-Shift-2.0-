@@ -30,14 +30,15 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc,setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
   authDomain: "boom-shift.firebaseapp.com",
   projectId: "boom-shift",
-  storageBucket: "boom-shift.firebasestorage.app",
+  //storageBucket: "boom-shift.firebasestorage.app",
+  storageBucket: "boom-shift.appspot.com",
   messagingSenderId: "842513407574",
   appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
 };
@@ -83,7 +84,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 📸 Profile pic input (NOW SAFE)
+  //  Profile pic input (NOW SAFE)
+
+await updateDoc(doc(db, "users", uid), { photoURL });
+
   const profileInput = document.getElementById("profileInput");
   if (profileInput) {
     profileInput.addEventListener("change", handleProfilePicChange);
@@ -107,9 +111,9 @@ async function handleProfilePicChange(e) {
     const img = document.getElementById("profilePic");
     if (img) img.src = photoURL;
 
-    console.log("✅ Profile pic updated");
+    console.log("Profile pic updated");
   } catch (err) {
-    console.error("❌ Error updating profile pic:", err);
+    console.error(" Error updating profile pic:", err);
   }
 }
 </script>
