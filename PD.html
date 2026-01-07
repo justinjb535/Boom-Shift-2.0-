@@ -31,6 +31,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
@@ -509,6 +510,37 @@ document.addEventListener('click',(event)=>{
  stock.addEventListener('click',()=>{
    alert('cannot add stock at the moment')
  })
+const profileInput =   document.getElementById("profileInput");
+profileInput.addEventListener("change", handleProfilePicChange);
+
+async function handleProfilePicChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    // Get Firebase Storage ref
+    const storageRef = ref(getStorage(), `users/${auth.currentUser.uid}/profilePic`);
+    
+    // Upload file
+    await uploadBytes(storageRef, file);
+    
+    // Get download URL
+    const photoURL = await getDownloadURL(storageRef);
+    
+    // Update Firestore user doc
+    await updateDoc(doc(db, "users", auth.currentUser.uid), {
+      photoURL
+    });
+    
+    // Update profile pic img src
+    document.getElementById("profilePic").src = photoURL;
+    
+    console.log("Profile pic updated!");
+  } catch (err) {
+    console.error("Error updating profile pic:", err);
+  }
+}
+
  
  </script>
 </body>
