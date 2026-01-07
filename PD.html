@@ -86,8 +86,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   //  Profile pic input (NOW SAFE)
 
-await updateDoc(doc(db, "users", uid), { photoURL });
-
   const profileInput = document.getElementById("profileInput");
   if (profileInput) {
     profileInput.addEventListener("change", handleProfilePicChange);
@@ -106,7 +104,10 @@ async function handleProfilePicChange(e) {
     await uploadBytes(storageRef, file);
     const photoURL = await getDownloadURL(storageRef);
 
-    await updateDoc(doc(db, "users", uid), { photoURL });
+    await updateDoc(doc(db, "users", uid),
+   { photoURL },
+   {merge : true}
+);
 
     const img = document.getElementById("profilePic");
     if (img) img.src = photoURL;
