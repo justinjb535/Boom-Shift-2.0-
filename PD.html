@@ -97,6 +97,39 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// adding profile picture code 
+ const profileInput =   document.getElementById("profileInput");
+profileInput.addEventListener("change", handleProfilePicChange);
+
+async function handleProfilePicChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    // Get Firebase Storage ref
+    const storageRef = ref(getStorage(), `users/${auth.currentUser.uid}/profilePic`);
+    
+    // Upload file
+    await uploadBytes(storageRef, file);
+    
+    // Get download URL
+    const photoURL = await getDownloadURL(storageRef);
+    
+    // Update Firestore user doc
+    await updateDoc(doc(db, "users", auth.currentUser.uid), {
+      photoURL
+    });
+    
+    // Update profile pic img src
+    document.getElementById("profilePic").src = photoURL;
+    
+    console.log("Profile pic updated!");
+  } catch (err) {
+    console.error("Error updating profile pic:", err);
+  }
+}
+
 </script>
     <style>
       body{
@@ -510,37 +543,6 @@ document.addEventListener('click',(event)=>{
  stock.addEventListener('click',()=>{
    alert('cannot add stock at the moment')
  })
-const profileInput =   document.getElementById("profileInput");
-profileInput.addEventListener("change", handleProfilePicChange);
-
-async function handleProfilePicChange(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  try {
-    // Get Firebase Storage ref
-    const storageRef = ref(getStorage(), `users/${auth.currentUser.uid}/profilePic`);
-    
-    // Upload file
-    await uploadBytes(storageRef, file);
-    
-    // Get download URL
-    const photoURL = await getDownloadURL(storageRef);
-    
-    // Update Firestore user doc
-    await updateDoc(doc(db, "users", auth.currentUser.uid), {
-      photoURL
-    });
-    
-    // Update profile pic img src
-    document.getElementById("profilePic").src = photoURL;
-    
-    console.log("Profile pic updated!");
-  } catch (err) {
-    console.error("Error updating profile pic:", err);
-  }
-}
-
  
  </script>
 </body>
