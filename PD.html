@@ -80,46 +80,8 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error("Firestore error:", err);
     }
-
-    const profileInput = document.getElementById("profileInput");
-    if (profileInput) {
-      profileInput.addEventListener("change", handleProfilePicChange);
-    }
   });
 });
-async function handleProfilePicChange(e) {
-  const file = e.target.files[0];
-  if (!file || !auth.currentUser) return;
-
-  try {
-    const uid = auth.currentUser.uid;
-    // Use a timestamp in the storage path to avoid cache issues
-    const storageRef = ref(storage, `users/${uid}/profilePic_${Date.now()}`);
-
-    // 1. Upload to Firebase Storage
-    await uploadBytes(storageRef, file);
-    const photoURL = await getDownloadURL(storageRef);
-
-    // 2. Update Firestore (Correct Syntax)
-    // updateDoc only updates the specific fields you provide
-    await updateDoc(doc(db, "users", uid), {
-      photoURL: photoURL
-    });
-
-    // 3. Update UI
-    const img = document.getElementById("profilePic");
-    if (img) img.src = photoURL;
-
-    console.log("Profile pic updated successfully");
-  } catch (err) {
-    // If updateDoc fails because the doc doesn't exist, use setDoc instead
-    if (err.code === 'not-found') {
-      await setDoc(doc(db, "users", auth.currentUser.uid), { photoURL }, { merge: true });
-    } else {
-      console.error("Error updating profile pic:", err);
-    }
-  }
-}
 
 </script>
 
