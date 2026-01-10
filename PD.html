@@ -28,7 +28,133 @@
 
    <link rel="manifest" href="manifest.json">
   <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+    // Firebase config (keep as is for your project)
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+      authDomain: "boom-shift.firebaseapp.com",
+      projectId: "boom-shift",
+      storageBucket: "boom-shift.firebasestorage.app",
+      messagingSenderId: "842513407574",
+      appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- EDIT THESE VALUES ---
+    const cloudName = 'ddf5lawze';               // your Cloudinary cloud name
+    const unsignedUploadPreset = 'profile_unsigned'; // exact unsigned preset name (case-sensitive)
+    // -------------------------
+
+    // helper to set image src and click-to-open
+    function setImageSrc(imgEl, url) {
+      if (!imgEl || !url) return;
+      imgEl.src = url;
+      imgEl.style.cursor = 'pointer';
+      imgEl.onclick = () => window.open(url, '_blank');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const profilePic = document.getElementById('profilePic');
+      const profileInput = document.getElementById('profileInput');
+      const elName = document.getElementById('name');
+      const elEmail = document.getElementById('email');
+      const elNumber = document.getElementById('number');
+
+      // safe set text
+      const setText = (el, text) => { if (el) el.textContent = text ?? ''; };
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          // not signed in — redirect to your login page
+          window.location.href = 'BoomAuthecation.html';
+          return;
+        }
+
+        // Read persisted user data from Firestore (users/{uid}), fallback to Auth profile
+        try {
+          const userRef = doc(db, 'users', user.uid);
+          const snap = await getDoc(userRef);
+          if (snap.exists()) {
+            const data = snap.data();
+
+            const nameVal = data.username ?? data.name ?? data.fullName ?? user.displayName ?? '';
+            const emailVal = data.email ?? user.email ?? '';
+            const phoneVal = data.phoneNumber ?? data.phone ?? data.mobile ?? user.phoneNumber ?? '';
+            const photoUrl = data.photoURL ?? data.avatarUrl ?? data.photo ?? user.photoURL ?? null;
+
+            setText(elName, nameVal);
+            setText(elEmail, emailVal);
+            setText(elNumber, phoneVal);
+
+            if (photoUrl) setImageSrc(profilePic, photoUrl);
+            else if (user.photoURL) setImageSrc(profilePic, user.photoURL);
+          } else {
+            // no Firestore doc: use auth profile
+            setText(elName, user.displayName ?? '');
+            setText(elEmail, user.email ?? '');
+            setText(elNumber, user.phoneNumber ?? '');
+            if (user.photoURL) setImageSrc(profilePic, user.photoURL);
+          }
+        } catch (err) {
+          console.error('Error reading user doc:', err);
+          // fallback to auth profile
+          setText(elName, user.displayName ?? '');
+          setText(elEmail, user.email ?? '');
+          setText(elNumber, user.phoneNumber ?? '');
+          if (user.photoURL) setImageSrc(profilePic, user.photoURL);
+        }
+
+        // Upload handler -> Cloudinary unsigned
+        if (!profileInput) return;
+        profileInput.addEventListener('change', async (ev) => {
+          const file = ev.target.files && ev.target.files[0];
+          if (!file) return;
+
+          // local preview while uploading
+          try { profilePic.src = URL.createObjectURL(file); } catch (e) { /* ignore preview error */ }
+
+          // Build Cloudinary unsigned upload request
+          const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', unsignedUploadPreset);
+
+          try {
+            const resp = await fetch(endpoint, { method: 'POST', body: formData });
+            const text = await resp.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { throw new Error('Bad Cloudinary response: ' + text); }
+
+            if (!resp.ok || data.error) {
+              const message = data?.error?.message || resp.statusText || 'Cloudinary upload failed';
+              throw new Error(message);
+            }
+
+            const secureUrl = data.secure_url || data.url;
+            if (!secureUrl) throw new Error('Cloudinary returned no secure_url');
+
+            // Persist secure_url to Firestore (merge to avoid overwrite)
+            await setDoc(doc(db, 'users', user.uid), { photoURL: secureUrl }, { merge: true });
+
+            // Update Firebase Auth profile (optional)
+            try { await updateProfile(user, { photoURL: secureUrl }); } catch (e) { console.warn('updateProfile warn', e); }
+
+            // Use the persisted URL
+            setImageSrc(profilePic, secureUrl);
+            alert('Profile picture uploaded.');
+
+          } catch (err) {
+            console.error('Upload error:', err);
+            alert('Upload failed: ' + (err.message || err));
+          }
+        });
+      });
+    });
 </script>
 
     <style>
