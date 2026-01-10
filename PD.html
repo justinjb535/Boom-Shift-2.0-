@@ -55,6 +55,34 @@ try {
  log('Reading Firestore users/' + user.uid);
  const snap = await getDoc(userRef);
 
+// helper to safely set element text
+ const setText = (el, value) => {
+ if (!el) { log('Missing element for setText', 'warn'); return; }
+ el.textContent = value ?? '';
+ };
+if (snap.exists()) {
+ const data = snap.data();
+ log('Firestore user doc keys: ' + Object.keys(data).join(', '));
+ log('Firestore user doc contents: ' + JSON.stringify(data));
+// Try several common keys for each field (fallback order)
+const nameVal = data.username ?? data.name ?? data.fullName ?? user.displayName ?? '(no name)';
+const emailVal = data.email ?? user.email ?? '(no email)';
+const phoneVal = data.phoneNumber ?? data.phone ?? data.mobile ?? user.phoneNumber ?? '(no phone)';
+const photoUrl = data.photoURL ?? data.avatarUrl ?? data.photo ?? user.photoURL ?? null;
+
+setText(elName, nameVal);
+setText(elEmail, emailVal);
+setText(elNumber, phoneVal);
+
+if (photoUrl && profilePic) {
+  profilePic.src = photoUrl;
+  profilePic.style.cursor = 'pointer';
+  profilePic.onclick = () => window.open(photoUrl, '_blank');
+  log('Loaded photo from Firestore/Auth: ' + photoUrl);
+} else {
+  log('No photoURL found in Firestore or Auth');
+}
+
 
 
 // tiny on-screen logger (visible on mobile)
