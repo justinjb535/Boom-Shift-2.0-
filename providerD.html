@@ -174,15 +174,14 @@
     box-shadow:0 0 8px black;
     
   }
-  .inputT{
-    background-color:#444; color:white;
+   .inputT{
+    background-color:white; color:black;
     border-radius:20px;
     width:80%;
     padding:10px;
     margin-bottom:5px;
     text-align:center;
   }
-
    .Container{
       overflow-x:auto;
       white-space:nowrap;
@@ -194,85 +193,7 @@
       padding:20px;
     }
 
-.bottom_nav {
-  position:fixed;
-  bottom:0;
-  left: 0;
-  height:60px;
-  width: 100%;
-  background:linear-gradient(to left,#222,black);
-  display: flex;
-  justify-content: space-around;
-  padding:5.5px;
-  border-top: 1px solid black;
-  box-shadow: 0 0 4px black;
-  z-index: 1;
-  margin-bottom:env(safe-area-insey-bottom);
-}
 
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-
-.nav-item p {
-  color: #fff;
-  font-size: 12px;
-  margin-top:0;
-}
-
-.home-icon {
-  font-size: 22px;
-  position: relative;
-  border: none;
-  border-radius: 55%;
-  background:none;
-  padding: 2px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.chats {
-  font-size: 22px;
-  position: relative;
-  border: none;
-  border-radius: 55%;
-  background:none;
-  padding: 2px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.updates {
-  font-size: 22px;
-  position: relative;
-  display: flex;
-  border: none;
-  border-radius: 55%;
-  background:none;
-  padding: 2px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-
-}
-.shifted-items {
-  font-size: 22px;
-  position: relative;
-  display: flex;
-  border: none;
-  border-radius: 55%;
-  background:none;
-  padding: 2px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-}
-
- 
  .release{
    justify-content:stretch;
    background-color:#444;color:white;
@@ -294,6 +215,50 @@
    outline:1px solid #1899ff;
    text-align:center;
    color:rgb(169,169,169);
+ }
+ .size-6{
+   top:250px;
+   position:fixed;
+   left:40%;
+   background:#1899ff;
+   border-radius:50%;
+   padding:4px;
+ }
+ #centeriser{
+   display:flex;
+   flex-direction:column;
+   flex-wrap:wrap;
+   align-items:center;
+   justify-content: space-between;
+   margin-top:60px;
+ }
+ .imgSelector{
+   background:white;
+   width:200px;
+   height:25px;
+   border-radius:25pc;
+   padding:6px;
+   margin:10px 0;
+   animation:slideDown 1.9s ease ;
+ }
+ .nxt1{
+   position:fixed;
+   right:110px;
+   top:620px;
+   border-radius:19px;
+   padding:2px 12px;
+   border:none;
+   animation:slideDown 1.9s ease;
+ }
+ @keyframes slideDown{
+   from{
+     opacity:0;
+     transform:translateY(-180px);
+   }
+   to{
+     opacity:1;
+     transform: translateY(10px) ;
+   }
  }
   </style>
 </head>
@@ -319,9 +284,7 @@
 <!--removed 2 closing divs here -->
     <!--First popup-->
     <div id="popup" class="popup" style="display:none;">
-      <h4 style="background-color:#78e5dbd3;color:white;padding:15px;box-shadow:3px
-      59px
-      2px black;">select an option</h4><hr>
+      <h4>select an option</h4><hr>
       <button id="about-us-btn" class="btn1">more about us</button><hr>
       <button id="terms-btn" class="btn1" onclick="window.location.href='Terms and conditions.html'">Terms and condtions </button><hr>
       <button id="settings-btn" class="btn1">settings
