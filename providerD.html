@@ -174,6 +174,28 @@
     box-shadow:0 0 8px black;
     
   }
+  #pageIndicator{
+    background:white; color:green;
+    position:fixed;
+    top:100px;
+    right:8px;
+    width:20px;
+    height:20px;
+    padding:2px;
+    border-radius:50%;
+    border:none;
+  } 
+  #X{
+   background:white; color:black;
+   position:fixed;
+   top:100px;
+   left:10px;
+   width:20px;
+   height:20px;
+   padding:2px;
+   border-radius:50%;
+   border:none;
+}
    .inputT{
     background-color:white; color:black;
     border-radius:20px;
@@ -309,6 +331,10 @@
     </div>
     </div>
     </div>
+   <div id="X">X</div>
+   <div id="pageIndicator">
+      1
+    </div>
 <br> <br> <br> <br><br>
     <form id="pForm">
    <label for="image-input" capture="camera" class="FAB" id="image-preview" onclick="message()"><svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -375,6 +401,11 @@
     const centeriser = document.getElementById('centeriser');
     const cap = document.getElementById('cap');
    const PI = document.getElementById('pageIndicator');
+const X = document.getElementById('X');
+
+X.addEventListener('click',()=>{
+window.location.href = 'PD.html';
+});
         let selectedImages = [];
 
   imageInput.addEventListener('change', (e) => {
