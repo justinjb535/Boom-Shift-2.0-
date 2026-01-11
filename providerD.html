@@ -272,10 +272,7 @@
   cursor: pointer;
 }
 
- .FAB{
-   font-size:50px;
-   border:1px solid white;
- }
+ 
  .release{
    justify-content:stretch;
    background-color:#444;color:white;
@@ -350,34 +347,36 @@
     </div>
     </div>
 <br> <br> <br> <br><br>
-  <form id="pForm">
-   <label for="image-input" capture="camera" class="FAB" id="image-preview" onclick="message()"><svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+    <form id="pForm">
+   <label for="image-input" capture="camera" class="FAB" id="image-preview" onclick="message()"><svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
   <path d="M12 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 12 9Z" />
   <path fill-rule="evenodd" d="M9.344 3.071a49.52 49.52 0 0 1 5.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 0 0 1.11-.71l.822-1.315a2.942 2.942 0 0 1 2.332-1.39ZM6.75 12.75a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Zm12-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
 </svg>
 </label>
-<input type="file" accept="image/*"id="image-input" capture="camera" style="display:none" multiple>
+<input type="file" accept="image/*"id="image-input" capture="camera" style="display:none;" multiple>
 <br>
-<img id="image-preview" src="imageDataUrl" alt="press to enter image " style="max-width: 100%; height: auto;">
-<br><br><br>
-  <input type="text" id="name"  class="inputT" placeholder="Enter Product Name" maxlength="20" required/>
-  <br>
- <input type="number" id="price" class="inputT" placeholder="Enter Price" required/>
- <br>
- <input type="number" id="phoneNumber" class="inputT" placeholder="Enter phone number" required/>
- <br>
- <input type="text" id="transM" class="inputT" placeholder="Enter Transmition type" required/>
- 
- <input type="text" id="condition" class="inputT" placeholder="Enter the condition"/>
- <br>
- <input type="number" id="mileage" class="inputT" placeholder="Enter car's mileage"/>
- <br>
- <input type="text" id="location" class="inputT" placeholder="Enter you location"/>
-<br>
- <textarea id="description" class="inputT" placeholder="Enter Full description" required></textarea>
- <input type="text" id="ecoCash-trans-id" class="inputT" placeholder="Enter your EcoCash/NetOne Transaction-ID"/>
- <br>
-  <select class="YM" id="yearModel">
+<div id="image-preview" style="top:30%; position:fixed;max-width: 100%;"></div>
+ <h3 id="cap">Please insert a picture</h3>
+ <div id="centeriser" style="display:none;">
+   <div id="form1">
+   <input type="text" id="name" class="imgSelector gg" placeholder="Enter Vehicle Name" maxlength="20" required/>
+   <input type="number" id="price" class="imgSelector gg" placeholder="Enter Price" required/>
+   <input type="text" id="conD" class="imgSelector gg" placeholder="Enter condition of vehicle"/>
+   <button class="nxt1" id='nxtB1' type="submit" style="display:;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 5L15 12L8 19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></button>
+   </div>
+   <div id="form2" style="display:none;">
+     <input type="text" id="transM" class="imgSelector" placeholder="Enter Transmission Type" required/>
+     <input type="text" id="mileage" class="imgSelector" placeholder="Enter Mileage"/>
+     <input type="location" id="location" class="imgSelector" placeholder="Enter Location"/>
+       <button class="nxt1" id="nxt2" type="submit"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 5L15 12L8 19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></button>
+   </div>
+   
+   <div id="form3" style="display:none;">
+       <select class="YM" id="yearModel" required>
   <option value="">none</option>
   <option value="2026">2026</option>
   <option value="2025">2025</option>
@@ -398,79 +397,105 @@
   <option value="2010">2010</option>
   <option value="not mentioned">older model</option>
   </select>
- <button type="sumbit" class="release">Post</button>
-  </form>
+   <br>
+   <input type="text" id="ecoCash-trans-id" class="inputT" placeholder="Enter your EcoCash/NetOne Transaction-ID"/>
+     <textarea id="description" class="inputT" placeholder="Enter Full description" required></textarea>
+   </div>
+ </div>
+  <!---<button id="nxt1" type="submit" style="display:none;">send</button>-->
  
-
-<!-- bottom heading and SPA --> 
-   <div class = "bottom_nav"> 
-<div class = "nav-item">
-<button id = "home-bttn" class= "home-icon" data-document-type="marketPlace"
->🗃️</button> 
-<span style = "font-family:Courier New;">MyStore</span >
-</div > <div class = "nav-item">
-<button id = "chat-bttn" class = "chats"
-data-document-type="chatplace" > 💬</button >
-<span style = "font-family:Courier New;" > chats</span >
-</div >
-<div class = "nav-item" >
-<button id = "updates-bttn" class = "updates" onclick = "window.location.href='providerUpdatepage.html'" >🔔</button > 
-<span style = "font-family:Courier new;" > updates</span >
-</div > 
-<div class = "nav-item" >
-<button class = "shifted-items" role = "button" aria-label = "cart button"
-onclick="window.location.href='my shift.html'" >
-➕</button > 
-<span style = "font-family:Courier New;" >AddStock</span >
-<script src="auth.js"></script>
-</div >
-  </div>
-  <button onclick="resetAll()">delete All</button>
-    <script src="Provider.js"> </script>
-    </div>
     </main>
     </div>
     <script>
-      document.getElementById("pForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+      const imageInput = document.getElementById('image-input');
+   const imagePreview = document.getElementById('image-preview');
+    const centeriser = document.getElementById('centeriser');
+    const cap = document.getElementById('cap');
+   const PI = document.getElementById('pageIndicator');
+        let selectedImages = [];
 
-  let message = document.getElementById("name").value;
-  let price = document.getElementById("price").value;
-  let callNumber = document.getElementById("phoneNumber").value;
-  let yearModel = document.getElementById("yearModel").value;
-  let Descp = document.getElementById('description').value;
-  let cond = document.getElementById('condition').value;
-  let location = document.getElementById('location').value;
-  let mileage = document.getElementById("mileage").value;
-  let transM = document.getElementById("transM").value;
-  let imageFile = document.getElementById("image-input").files[0];
-   
-    if (imageFile) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      const imageData = reader.result;
-      const timePosted = new
-      Date().toISOString();
-      navigator.mediaDevices.getUserMedia({video:true});
-      const posts = JSON.parse(localStorage.getItem("posts")) || [];
- 
-posts.push({ message, price, image: imageData,timePosted, Descp,transM, cond, location, mileage, yearModel, callNumber });
-      localStorage.setItem("posts", JSON.stringify(posts));
+  imageInput.addEventListener('change', (e) => {
+    const newImages = Array.from(e.target.files);
 
-      alert("Product added!");
-      document.getElementById("product-form").reset();
-    };
-    reader.readAsDataURL(imageFile);
+    // Add new images to selectedImages (avoiding duplicates by name if needed)
+    selectedImages = [...selectedImages, ...newImages];
+
+    // Clear the preview and rebuild it
+    imagePreview.innerHTML = '';
+    selectedImages.forEach((image, index) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '200px';
+        img.style.height = '150px'
+        img.style.margin = '10px';
+        img.title = image.name;
+ imagePreview.appendChild(img);
+      };
+      reader.readAsDataURL(image);
+    });
+
+    // Optional: Reset file input for next selection
+    imageInput.value = '';
+   cap.innerText = "Fill in the fields below";
+    centeriser.style.display = "block";
+  
+  });
+const form1 = document.getElementById('form1');
+const form2 = document.getElementById('form2');
+const form3 = document.getElementById('form3');
+const nextBtn = document.getElementById('nxtB1');
+
+const nameInput = document.getElementById('name');
+const priceInput = document.getElementById('price');
+const conDInput = document.getElementById('conD');
+
+nextBtn.style.display = 'none'; // Hide initially
+
+form1.addEventListener('input', () => {
+  const nameValid = nameInput.value.trim() !== '';
+  const priceValid = priceInput.value.trim() !== '';
+  const conDValid = conDInput.value.trim() !== '';
+
+  if (nameValid && priceValid && conDValid) {
+    nextBtn.style.display = 'block';
   } else {
-    alert("Please select an image.");
+    nextBtn.style.display = 'none';
   }
 });
 
-function resetAll() {
-  localStorage.removeItem("posts");
-  alert("Posts removed");
-}
+nextBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  form1.style.display = 'none';
+  form2.style.display = 'block';
+  PI.innerText = "2"
+});
 
+const transMInput = document.getElementById('transM');
+const mileageInput = document.getElementById('mileage');
+const locationInput = document.getElementById('location');
+const nextBtn2 = document.getElementById('nxt2');
+
+nextBtn2.style.display = 'none';
+
+form2.addEventListener('input', () => {
+  const transMValid = transMInput.value.trim() !== '';
+  const mileageValid = mileageInput.value.trim() !== '';
+  const locationValid = locationInput.value.trim() !== '';
+
+  if (transMValid && mileageValid && locationValid) {
+    nextBtn2.style.display = 'block';
+  } else {
+    nextBtn2.style.display = 'none';
+  }
+  nextBtn2.addEventListener('click',()=>{
+    form1.style.display = "none";
+    form2.style.display = 'none';
+    form3.style.display = "block";
+    PI.innerText = "3"
+  })
+});
 const popupBtn=
 document.getElementById('popup-btn');
 const Popup=
