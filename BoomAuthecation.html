@@ -144,6 +144,21 @@ async function handleSignup(email, password, displayName = "", requestedRole = "
  // update displayName in Auth profile for convenience
  try { if (displayName) await updateProfile(user, { displayName }); } catch (uErr) { console.warn("updateProfile failed", uErr); }
 
+// create user doc in Firestore (role set to 'buyer' by default)
+await createOrUpdateUserDoc(user, { displayName, requestedRole });
+
+// After signup, redirect according to role (will be buyer by default)
+redirectByRole(user);
+
+} catch (err) {
+ const code = err?.code || "";
+ if (code === "auth/email-already-in-use") showMsg("This email is already in use.", "err");
+ else if (code === "auth/invalid-email") showMsg("Invalid email address.", "err");
+ else if (code === "auth/weak-password") showMsg("Choose a stronger password.", "err");
+ else showMsg(err?.message || "Signup failed", "err");
+ console.error("signup error", err);
+ }
+}
 
 
 </head>
