@@ -66,6 +66,24 @@ function safeRedirect(url) {
  window.location.href = url;
 }
 
+async function getUserRole(uid) {
+ if (!uid) return "buyer";
+ try {
+ const snap = await getDoc(doc(db, "users", uid));
+ if (!snap.exists()) return "buyer";
+ return snap.data().role ?? "buyer";
+ } catch (err) {
+ console.error("getUserRole error:", err);
+ return "buyer";
+ }
+}
+async function redirectByRole(user) {
+ if (!user) return;
+ const role = await getUserRole(user.uid);
+ if (role === "seller") safeRedirect(PROVIDER_DASHBOARD);
+ else safeRedirect(BUYER_DASHBOARD);
+}
+
 
 </head>
 
