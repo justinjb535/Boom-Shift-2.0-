@@ -83,7 +83,32 @@ async function redirectByRole(user) {
  if (role === "seller") safeRedirect(PROVIDER_DASHBOARD);
  else safeRedirect(BUYER_DASHBOARD);
 }
+async function createOrUpdateUserDoc(user, { displayName = "", requestedRole = "buyer" } = {}) {
+ if (!user) throw new Error("No user provided");
+ const userRef = doc(db, "users", user.uid);
+ const base = {
+ username: displayName ?? user.displayName ?? "",
+ email: user.email ?? "",
+ role: "buyer", // client defaults to buyer; admin must promote
+ updatedAt: serverTimestamp()
+ };
+ await setDoc(userRef, base, { merge: true });
 
+if (requestedRole === "provider") {
+ // create a provider request for admins to review
+ try {
+ await addDoc(collection(db, ROLE_REQUESTS_COLLECTION), {
+ userId: user.uid,
+ requestedAt: serverTimestamp(),
+ status: "pending",
+ requestedDisplayName: displayName ?? user.displayName ?? "",
+ email: user.email ?? ""
+ });
+ } catch (err) {
+ console.warn("Failed to create provider request:", err);
+ }
+ }
+}
 
 </head>
 
