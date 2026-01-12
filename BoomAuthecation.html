@@ -7,6 +7,30 @@
     <title></title>
     <link rel="stylesheet" href="boomc.css"/>
       <link rel="manifest" href="manifest.json">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import {
+ getAuth,
+ onAuthStateChanged,
+ createUserWithEmailAndPassword,
+ signInWithEmailAndPassword,
+ signOut,
+ sendPasswordResetEmail,
+ GoogleAuthProvider,
+ signInWithPopup,
+ updateProfile
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import {
+ getFirestore,
+ doc,
+ getDoc,
+ setDoc,
+ addDoc,
+ collection,
+ serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+
 </head>
 
 <body>
