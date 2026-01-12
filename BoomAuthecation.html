@@ -42,6 +42,31 @@ const firebaseConfig = {
  messagingSenderId: "842513407574",
  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
 };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+function showMsg(text, kind = "info") {
+ const el = byId("msg") || byId("message") || null;
+ if (el) {
+ el.textContent = text;
+ el.style.color = kind === "err" ? "#ff9b9b" : kind === "warn" ? "#ffd880" : "#bfe7ff";
+ el.style.display = "block";
+ } else {
+ // fallback
+ if (kind === "err") console.error(text);
+ else console.log(text);
+ }
+}
+
+function safeRedirect(url) {
+ const current = window.location.href.split("/").pop();
+ if (!current || current === url || window.location.pathname.endsWith(url)) return;
+ window.location.href = url;
+}
+
+
 </head>
 
 <body>
