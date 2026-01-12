@@ -109,6 +109,42 @@ if (requestedRole === "provider") {
  }
  }
 }
+export async function protectProviderPage() {
+ onAuthStateChanged(auth, async (user) => {
+ if (!user) {
+ safeRedirect("BoomAuthecation.html");
+ return;
+ }
+ const role = await getUserRole(user.uid);
+ if (role !== "provider") safeRedirect(BUYER_DASHBOARD);
+ // else allow page to continue loading
+ });
+}
+async function handleLogin(email, password) {
+ if (!email || !password) { showMsg("Enter email and password", "err"); return; }
+ try {
+ await signInWithEmailAndPassword(auth, email, password);
+ // sign-in succeeded; onAuthStateChanged or redirectByRole will handle redirection
+ // call redirectByRole immediately for snappy UX
+ redirectByRole(auth.currentUser);
+ } catch (err) {
+ const code = err?.code || "";
+ if (code === "auth/user-not-found") showMsg("No account for that email.", "err");
+ else if (code === "auth/wrong-password") showMsg("Incorrect password.", "err");
+ else if (code === "auth/invalid-email") showMsg("Invalid email address.", "err");
+ else showMsg(err?.message || "Sign-in failed.", "err");
+ console.error("login error", err);
+ }
+}
+async function handleSignup(email, password, displayName = "", requestedRole = "buyer") {
+ if (!email || !password) { showMsg("Provide email and password", "err"); return; }
+ try {
+ const result = await createUserWithEmailAndPassword(auth, email, password);
+ const user = result.user;
+ // update displayName in Auth profile for convenience
+ try { if (displayName) await updateProfile(user, { displayName }); } catch (uErr) { console.warn("updateProfile failed", uErr); }
+
+
 
 </head>
 
