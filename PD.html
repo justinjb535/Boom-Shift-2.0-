@@ -156,7 +156,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebas
       });
     });
 </script>
-
+<script>
+window.onerror = function(msg, src, line, col, err) {
+    const el = document.createElement('div');
+    el.style.position='fixed'; el.style.left='6px'; el.style.right='6px'; el.style.top='6px';
+    el.style.background='rgba(0,0,0.9)'; el.style.color='#ff9b9b'; el.style.zIndex=999999;
+    el.style.fontFamily='monospace'; el.style.padding='8px';
+    el.textContent = `Error: ${msg} at ${line}:${col}`;
+    document.body.appendChild(el);
+    console.error(msg, err);
+  };
+</script>
     <style>
       body{
        background:linear-gradient(to right,#222,black );
