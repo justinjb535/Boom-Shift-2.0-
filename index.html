@@ -28,7 +28,98 @@
 
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styleBS.css">
- 
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+  authDomain: "boom-shift.firebaseapp.com",
+  projectId: "boom-shift",
+  storageBucket: "boom-shift.firebasestorage.app",
+  messagingSenderId: "842513407574",
+  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Adjust these names/targets to match your app
+const PROVIDER_ROLE_NAMES = ["provider", "seller"]; // accept both if your DB uses either
+const PROVIDER_DASHBOARD = "PD.html";
+const BUYER_PAGE = "BoomShift.html";
+const LOGIN_PAGE = "BoomAuthecation.html";
+
+/* helper to hide loading overlay */
+function hideLoading() {
+  const loader = document.querySelector('.loading-screen');
+  if (loader) {
+    loader.classList.remove('show');
+    // If you prefer to remove it entirely:
+    // loader.style.display = 'none';
+  }
+  // Allow page scrolling again if you set overflow hidden earlier
+  document.body.style.overflow = '';
+}
+
+/* Single consolidated auth handler */
+onAuthStateChanged(auth, async (user) => {
+  // If no user, force login
+  if (!user) {
+    // small delay so user sees redirect if needed
+    window.location.href = LOGIN_PAGE;
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+    const role = snap.exists() ? (snap.data().role ?? "buyer") : "buyer";
+
+    // If user is a provider/seller redirect to provider dashboard
+    if (PROVIDER_ROLE_NAMES.includes(role)) {
+      window.location.href = PROVIDER_DASHBOARD;
+      return;
+    }
+
+    // If user is buyer, optionally redirect to a buyer page or show index content
+    if (role === "buyer") {
+      // If you want buyers to remain on index (and show seller listings here), don't redirect.
+      // If you prefer to use a dedicated buyer page, uncomment the line below:
+      // window.location.href = BUYER_PAGE;
+      // Otherwise continue and populate index UI below.
+    }
+
+    // Populate UI fields on index page
+    const elName = document.getElementById("Name");
+    const elEmail = document.getElementById("Email");
+    const elNumber = document.getElementById("Number");
+    const profilePic = document.getElementById("profilePic");
+
+    if (snap.exists()) {
+      const userData = snap.data();
+      if (elName) elName.textContent = `Name: ${userData.username ?? user.displayName ?? ""}`;
+      if (elEmail) elEmail.textContent = `Email: ${userData.email ?? user.email ?? ""}`;
+      if (elNumber) elNumber.textContent = `Phone: ${userData.phoneNumber ?? ""}`;
+      if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
+    } else {
+      if (elName) elName.textContent = `Name: ${user.displayName ?? ""}`;
+      if (elEmail) elEmail.textContent = `Email: ${user.email ?? ""}`;
+      if (elNumber) elNumber.textContent = `Phone: ${user.phoneNumber ?? ""}`;
+      if (profilePic && user.photoURL) profilePic.src = user.photoURL;
+    }
+
+  } catch (err) {
+    console.error("Error fetching user document:", err);
+    // Optionally show an error UI here
+  } finally {
+    // Always hide the loading overlay after attempt (success or failure)
+    hideLoading();
+  }
+});
+</script>
 <style>
     body {
        background:black;
