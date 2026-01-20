@@ -25,82 +25,76 @@
 
 <!-- Canonical -->
 <link rel="canonical" href="https://justinjb535.github.io/Boom-Shift-2.0-/" />
-
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styleBS.css">
- <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebasefirestore.js";
+import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
 const firebaseConfig = {
- apiKey: "AIzaSyC6x73t7-vS0_nJVFWftiUWFP5g2H_fLYo",
- authDomain: "boom-shift.firebaseapp.com",
- projectId: "boom-shift",
- storageBucket: "boom-shift.appspot.com",
- messagingSenderId: "842513407574",
- appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
+  apiKey: "AIzaSyC6x73t7-vSO_nJVFWftiUWFP5g2H_fLYo",
+  authDomain: "boom-shift.firebaseapp.com",
+  projectId: "boom-shift",
+  storageBucket: "boom-shift.firebasestorage.app",
+  messagingSenderId: "842513407574",
+  appId: "1:842513407574:web:1ea8ce74d9ca29c6d165f7"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 🔒 Block sellers from viewing index.html (buyer side)
-onAuthStateChanged(auth, async (user) => {
- if (user) {
- const userDoc = await getDoc(doc(db, "users", user.uid));
- if (userDoc.exists()) {
- const role = userDoc.data().role;
- if (role === "seller") {
- window.location.href = "PD.html";
- // redirect seller to seller dashboard
-  } else if (role === "buyer") {
- window.location.href = "BoomShift.html";
- }
- }
- } else {
- window.location.href = "BoomAuthecation.html";
- }
-});
- window.location.href = "BoomAuthecation.html";
- // force login
- }
+onAuthStateChange(auth, async(user)=>{
+ if(user){
+const userDoc = await getDoc(doc(db, "user", user.uid));
+ if(userDoc.exist()){
+const role = userDoc.data().role;
+if(role === "seller"){
+//Redirects users to their rightful page 
+window.location.href = "PD.html";
+}else if(role === "buyer"){
+window.location.href = "Boomshift.html";
+}
+}
+}else{
+window.location.href = "BoomAuthecaction.html";
+return;
+}
 });
 
-onAuthStateChanged(auth, async (user) => {
-if (!user) {
- // Not logged in - redirect to the login page (use the correct filename)
- window.location.href = "BoomAuthecation.html";
- return;
- }
+onAuthStateChange( auth, async(user) => {
+if(!user){
+window.location.href = "BoomAuthecation.html";
+return;
+}
+try {
+const docRef = doc(db, "user", user.uid);
+const docSnap = await getDoc(docRef)
 
- try {
- const docRef = doc(db, "users", user.uid);
- const docSnap = await getDoc(docRef);
-
- const elName = document.getElementById("Name");
- const elEmail = document.getElementById("Email");
+const elName = document.getElementById("Name");
+const elEmail = document.getElementById("Email");
 const elNumber = document.getElementById("Number");
- const profilePic = document.getElementById("profilePic");
+const profilePic = document.getElementById("profilePic"):
 
- if (docSnap.exists()) {
- const userData = docSnap.data();
- if (elName) elName.textContent = `Name: ${userData.username ?? user.displayName ?? ""}`;
- if (elEmail) elEmail.textContent = `Email: ${userData.email ?? user.email ?? ""}`;
- if (elNumber) elNumber.textContent = `Phone: ${userData.phoneNumber ?? ""}`;
- if (profilePic && (userData.photoURL || user.photoURL)) profilePic.src = userData.photoURL ?? user.photoURL;
- } else {
- if (elName) elName.textContent = `Name: ${user.displayName ?? ""}`;
-if (elEmail) elEmail.textContent = `Email: ${user.email ?? ""}`;
- if (elNumber) elNumber.textContent = `Phone: ${user.phoneNumber ?? ""}`;
- if (profilePic && user.photoURL) profilePic.src = user.photoURL;
- }
- } catch (err) {
- console.error("Error fetching user document:", err);
- }
+if(docSnap.exists()){
+const userData = docSnap.data();
+if(elName) elName.textContent = ` ${userData.username ?? user.displayName ?? ""}` ;
+if(elNumber) elNumber.texteContent = `${userData.phoneNumber ?? ""}`;
+if(elEmail) elEmail.textContent = `${user data.email ?? user.email ?? ""}`;
+if(profilePic &&(userData.photoURL || user.photoURL)) profilePic.src = userData.URL ?? user.photoURL;
+}else {
+if(elName) elName.textContent = `${userData.username ?? user.displayName ?? ""}`;
+if(elNumber) elNumber.texteContent = `${userData.phoneNumber ?? ""}`;
+if(elEmail) elEmail.textContent = `${user data.email ?? user.email ?? ""}`;
+if(profilePic && user.photoURL) profilePic.src = user.photoURL;
+}
+} catch(err) { 
+console.log("Error detected while fetching user data ",err );
+}
 });
-</script>
+</script> 
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styleBS.css">
+ 
 <style>
     body {
        background:black;
